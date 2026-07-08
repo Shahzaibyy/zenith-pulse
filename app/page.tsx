@@ -114,7 +114,7 @@ export default function Page() {
           </a>
 
           <div className="hidden md:flex items-center gap-1">
-            {['services', 'how-we-work', 'portfolio', 'contact'].map((item) => (
+            {['services', 'team', 'how-we-work', 'portfolio', 'contact'].map((item) => (
               <a
                 key={item}
                 href={`#${item}`}
@@ -153,6 +153,7 @@ export default function Page() {
           <div className="md:hidden mt-2 mx-4 rounded-2xl p-5 space-y-1 mobile-glass border border-white/10 backdrop-blur-2xl">
             {[
               { href: '#services', label: 'Services' },
+              { href: '#team', label: 'Team' },
               { href: '#how-we-work', label: 'Process' },
               { href: '#portfolio', label: 'Portfolio' },
               { href: '#contact', label: 'Contact' },
@@ -543,6 +544,29 @@ export default function Page() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Team Section — Auto-Scrolling Row ─── */}
+      <section id="team" className="py-28 relative z-10 overflow-hidden">
+        <div className="container mx-auto max-w-7xl px-6 text-center mb-16">
+          <p className="text-cyan-400 font-semibold mb-4 uppercase tracking-[0.2em] text-xs">Our People</p>
+          <h2 className="text-[clamp(2rem,5vw,4rem)] font-black leading-tight tracking-[-0.035em] mb-5">
+            The Team Behind
+            <br />
+            <span className="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">Every Delivery</span>
+          </h2>
+          <p className="text-zinc-500 text-base max-w-xl mx-auto">
+            Senior engineers, a product designer, and a delivery lead working together on every project we ship.
+          </p>
+        </div>
+
+        <div className="team-scroll-mask">
+          <div className="team-track">
+            {[...teamMembers, ...teamMembers].map((member, idx) => (
+              <TeamMemberCard key={`${member.name}-${idx}`} member={member} />
+            ))}
           </div>
         </div>
       </section>
@@ -995,6 +1019,31 @@ export default function Page() {
         .founder-card { background: rgba(255,255,255,0.02); }
         .founder-left-panel { background: linear-gradient(160deg, rgba(99,102,241,0.05) 0%, rgba(5,5,7,0.3) 100%); }
 
+        /* ── Team marquee ── */
+        .team-scroll-mask {
+          mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+          -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+        }
+        .team-track {
+          display: flex;
+          gap: 1.25rem;
+          width: max-content;
+          padding: 0 1.5rem;
+          animation: team-scroll 42s linear infinite;
+        }
+        .team-track:hover { animation-play-state: paused; }
+        @keyframes team-scroll {
+          from { transform: translateX(0); }
+          to { transform: translateX(-50%); }
+        }
+        .team-card {
+          transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .team-card:hover { transform: translateY(-4px); }
+        @media (prefers-reduced-motion: reduce) {
+          .team-track { animation: none; }
+        }
+
         /* ── CTA card ── */
         .cta-card { background: rgba(255,255,255,0.02); }
 
@@ -1104,6 +1153,184 @@ function ServiceBentoCard({
           <a href="#contact" className={`text-${c}-400 hover:text-${c}-300 transition-colors underline`}>Get in touch</a>
         </div>
       )}
+    </div>
+  )
+}
+
+/* ─── Team Data ───
+   HOW TO ADD REAL PHOTOS:
+   LinkedIn blocks automated scraping, so photos could not be pulled from the
+   profile URLs automatically — they have to be added manually.
+   1. Save each person's photo (square, at least 300x300px) into /public/team/
+      e.g. /public/team/abdullah-bin-shahzad.jpg
+   2. Set that path as the `photoSrc` value below for that person.
+   Until a photoSrc is set, the card automatically falls back to the
+   initials avatar (same style as the founder card above), so nothing breaks.
+*/
+interface TeamMember {
+  name: string
+  role: string
+  bio: string
+  skills: string[]
+  linkedin: string
+  initials: string
+  color: string
+  photoSrc?: string
+}
+
+const teamMembers: TeamMember[] = [
+  {
+    name: 'Abdullah Bin Shahzad',
+    role: 'MERN Stack Lead Developer',
+    bio: 'Leads MERN stack development, architecting scalable Node.js/Express backends and dynamic React front-ends.',
+    skills: ['MongoDB', 'Express.js', 'React', 'Node.js', 'REST APIs'],
+    linkedin: 'https://www.linkedin.com/in/abdullah-bin-shahzad-507a56242/',
+    initials: 'AS',
+    color: 'indigo',
+    // photoSrc: '/team/abdullah-bin-shahzad.jpg',
+  },
+  {
+    name: 'Saif Ullah',
+    role: 'Product UI/UX Designer',
+    bio: 'Figma expert crafting intuitive product experiences and pixel-perfect, conversion-focused interfaces.',
+    skills: ['Figma', 'UI/UX Design', 'Prototyping', 'Design Systems'],
+    linkedin: 'https://www.linkedin.com/in/saif-ullah-52ab4a243/',
+    initials: 'SU',
+    color: 'cyan',
+    photoSrc: '/saif.jpg',
+  },
+  {
+    name: 'Raza Saeed',
+    role: 'Software Engineer — Full-Stack (Mobile + Web)',
+    bio: 'Builds products end-to-end across mobile and web, with a strong focus on system design, APIs, and databases.',
+    skills: ['System Design', 'REST APIs', 'Databases', 'Mobile + Web'],
+    linkedin: 'https://www.linkedin.com/in/razasaeed246/',
+    initials: 'RS',
+    color: 'violet',
+    photoSrc: '/raza%20saeed.jpg',
+  },
+  {
+    name: 'Ibrahim Bashir',
+    role: 'Data Engineer & ML Specialist',
+    bio: 'Designs data pipelines and machine learning models that turn raw data into actionable business insight.',
+    skills: ['Data Engineering', 'Machine Learning', 'Data Analysis', 'Python'],
+    linkedin: 'https://www.linkedin.com/in/ibrahim-bashir-091708217/',
+    initials: 'IB',
+    color: 'pink',
+    photoSrc: '/ibrahim%20bashir.jpg',
+  },
+  {
+    name: 'Abdur Rehman Mahmood',
+    role: 'Full-Stack Developer',
+    bio: 'Builds modern web applications across the Node, NestJS, Next.js, and React ecosystem end-to-end.',
+    skills: ['Node.js', 'NestJS', 'Next.js', 'React', 'TypeScript'],
+    linkedin: 'https://www.linkedin.com/in/abdur-rehman-mahmood/',
+    initials: 'AM',
+    color: 'emerald',
+    // photoSrc: '/team/abdur-rehman-mahmood.jpg',
+  },
+  {
+    name: 'Umar Khalid',
+    role: 'Senior Software Engineer',
+    bio: 'Senior engineer delivering high-performance mobile and web applications across the full dev lifecycle.',
+    skills: ['Mobile Development', 'Web Development', 'Architecture'],
+    linkedin: 'https://www.linkedin.com/in/umarkhalid15/',
+    initials: 'UK',
+    color: 'amber',
+    photoSrc: '/Umar%20Khalid.jpg',
+  },
+  {
+    name: 'Qalab-e-Zainab',
+    role: 'Project Manager',
+    bio: 'Drives projects from planning to delivery, keeping cross-functional teams aligned and on schedule.',
+    skills: ['Project Management', 'Agile/Scrum', 'Stakeholder Comms'],
+    linkedin: 'https://www.linkedin.com/in/qalab-e-zainab-6aa1b3357/',
+    initials: 'QZ',
+    color: 'indigo',
+    photoSrc: '/qalabezainab.jpg',
+  },
+  {
+    name: 'Shahzaib Hassan',
+    role: 'Software Architect — DevOps Leader',
+    bio: 'Designs scalable AI systems for enterprise resilience, leading across Python, AI/ML, Java, and DevOps.',
+    skills: ['Python', 'AI/ML', 'Java', 'DevOps', 'Architecture'],
+    linkedin: 'https://www.linkedin.com/in/shahzaib-dev/',
+    initials: 'SH',
+    color: 'sky',
+    photoSrc: '/shahzaib.jpg',
+  },
+  {
+    name: 'Abdul Raheem Mohammed',
+    role: 'Smart City Senior Manager — Business Partner (KSA)',
+    bio: 'Saudi Premium Residency (Special Talent) holder driving smart city programs and regional enterprise partnerships.',
+    skills: ['Smart City', 'Enterprise Partnerships', 'Regional Strategy', 'KSA'],
+    linkedin: 'https://www.linkedin.com/in/abdul-raheem-mohammed-53a8732a/',
+    initials: 'AR',
+    color: 'orange',
+    photoSrc: '/abdulraheem.jpg',
+  },
+]
+
+/* ─── Team Avatar — real photo if provided, initials fallback otherwise ─── */
+function TeamAvatar({ photoSrc, initials, color }: { photoSrc?: string; initials: string; color: string }) {
+  const [imgError, setImgError] = useState(false)
+  const showImage = Boolean(photoSrc) && !imgError
+
+  return (
+    <div className="relative w-20 h-20 mx-auto mb-5">
+      <div className={`absolute inset-0 rounded-full bg-gradient-to-br from-${color}-600/40 to-cyan-500/30 blur-xl`} />
+      <div className={`relative w-20 h-20 rounded-full border border-white/15 overflow-hidden flex items-center justify-center bg-gradient-to-br from-${color}-500/20 via-cyan-500/10 to-violet-500/20`}>
+        {showImage ? (
+          <Image
+            src={photoSrc as string}
+            alt={initials}
+            fill
+            className="object-cover"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <span className="text-lg font-black text-white tracking-tight">{initials}</span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ─── Team Member Card ─── */
+function TeamMemberCard({ member }: { member: TeamMember }) {
+  const c = member.color
+  return (
+    <div className="team-card flex-shrink-0 w-[290px] rounded-3xl border border-white/[0.07] bg-white/[0.02] p-7 hover:bg-white/[0.04] hover:border-white/[0.12]">
+      <TeamAvatar photoSrc={member.photoSrc} initials={member.initials} color={c} />
+
+      <div className="text-center mb-4">
+        <h3 className="text-base font-bold text-white tracking-tight mb-1">{member.name}</h3>
+        <p className={`text-xs font-semibold text-${c}-400 tracking-wide leading-snug`}>{member.role}</p>
+      </div>
+
+      <p className="text-xs text-zinc-500 leading-relaxed text-center mb-5 min-h-[52px]">{member.bio}</p>
+
+      <div className="flex flex-wrap justify-center gap-1.5 mb-5">
+        {member.skills.map((skill) => (
+          <span
+            key={skill}
+            className={`px-2.5 py-1 bg-${c}-500/[0.08] text-${c}-400/80 text-[10px] font-medium rounded-full border border-${c}-500/15`}
+          >
+            {skill}
+          </span>
+        ))}
+      </div>
+
+      <div className="flex justify-center">
+        <a
+          href={member.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-cyan-400 transition-colors font-medium"
+        >
+          <Linkedin size={13} /> View Profile
+        </a>
+      </div>
     </div>
   )
 }

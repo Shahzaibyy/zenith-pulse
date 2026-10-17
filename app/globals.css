@@ -125,3 +125,58 @@ body {
 .animate-marquee {
   animation: marquee 30s linear infinite;
 }
+
+/* ───────── Zenith Pulse · minimal glass theme ───────── */
+:root { --accent: #1aa7ff; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, sans-serif; -webkit-font-smoothing: antialiased; background: #07080b; }
+
+.glass-panel {
+  background: linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 20px 50px -25px rgba(0,0,0,0.7);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+}
+.glass-hover { transition: transform .45s cubic-bezier(.2,.7,.2,1), border-color .3s, background .3s, box-shadow .3s; }
+.glass-hover:hover { transform: translateY(-5px); border-color: rgba(26,167,255,0.35); box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 28px 60px -28px rgba(26,167,255,0.35); }
+
+.nav-glass { background: rgba(10,11,15,0.6); backdrop-filter: blur(20px) saturate(150%); -webkit-backdrop-filter: blur(20px) saturate(150%); border-bottom: 1px solid rgba(255,255,255,0.07); }
+
+.accent-text { background: linear-gradient(100deg, #fff 0%, #7fd0ff 45%, #1aa7ff 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; background-size: 200% 100%; animation: shimmer 7s ease-in-out infinite; }
+.btn-primary { background: var(--accent); color: #04121c; font-weight: 600; transition: transform .25s, box-shadow .25s, background .25s; box-shadow: 0 8px 30px -8px rgba(26,167,255,0.6); }
+.btn-primary:hover { background: #4dbbff; transform: translateY(-2px); box-shadow: 0 14px 36px -8px rgba(26,167,255,0.75); }
+.btn-ghost { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); color: #fff; backdrop-filter: blur(12px); transition: background .25s, transform .25s, border-color .25s; }
+.btn-ghost:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
+
+.eyebrow { font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+
+/* scroll reveal */
+.reveal { opacity: 0; transform: translateY(28px); filter: blur(6px); transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1), filter .9s; transition-delay: var(--d, 0ms); }
+.reveal.in { opacity: 1; transform: none; filter: none; }
+
+@keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+@keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,-30px) scale(1.08); } }
+@keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes spin-slow { to { transform: rotate(360deg); } }
+@keyframes ring { 0% { transform: scale(.6); opacity: .6; } 100% { transform: scale(1.6); opacity: 0; } }
+@keyframes team-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes line-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+.orb { position: absolute; border-radius: 9999px; filter: blur(130px); animation: drift 16s ease-in-out infinite; }
+.float { animation: floaty 6s ease-in-out infinite; }
+.ring { position: absolute; inset: 0; border-radius: 9999px; border: 1px solid rgba(26,167,255,.5); animation: ring 4s ease-out infinite; }
+
+.team-mask { mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent); }
+.team-track { display: flex; gap: 1.25rem; width: max-content; padding: 0 1.5rem; animation: team-scroll 48s linear infinite; }
+.team-track:hover { animation-play-state: paused; }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #07080b; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; filter: none; transition: none; }
+  .team-track, .orb, .float, .ring, .accent-text { animation: none; }
+  html { scroll-behavior: auto; }
+}
